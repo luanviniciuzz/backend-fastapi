@@ -19,18 +19,17 @@ def create_manutencao(data: ManutencaoCreate, db: Session = Depends(get_db)):
     summary="Lista todas as solicitações de manutenção"
 )
 def get_all_manutencao(db: Session = Depends(get_db)):
-    objs = service.get_all(db)
-    return objs
+    return service.get_all(db)
 
 @router.get("/{id}",
     response_model=ManutencaoSchema,
     summary="Exibi uma solicitação de manutenção pelo 'id'"
 )
 def get_manutencao(id: int, db: Session = Depends(get_db)):
-    obj = service.get_by_id(db, id)
-    if not obj:
+    manutencao = service.get_by_id(db, id)
+    if not manutencao:
         raise HTTPException(status_code=404, detail="Manutencao not found")
-    return obj
+    return manutencao
 
 @router.post("/{manutencao_id}/materiais",
     response_model=ManutencaoSchema,

@@ -19,15 +19,14 @@ def create_material(data: MaterialEstoqueCreate, db: Session = Depends(get_db)):
     summary="Lista todos os materiais no estoque"
 )
 def get_all_material(db: Session = Depends(get_db)):
-    objs = service.get_all(db)
-    return objs
+    return service.get_all(db)
 
 @router.get("/{id}",
     response_model=MaterialEstoqueSchema,
     summary="Exibi um material do estoque correspondente ao 'id'"
 )
 def get_material(id: int, db: Session = Depends(get_db)):
-    obj = service.get_by_id(db, id)
-    if not obj:
+    material = service.get_by_id(db, id)
+    if not material:
         raise HTTPException(status_code=404, detail="Material not found")
-    return obj
+    return material
