@@ -1,8 +1,10 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from app.models.manutencao import Manutencao
-from app.models.material import Material
+from app.models.materialestoque import MaterialEstoque
+from app.models.materialmanutencao import MaterialManutencao
 from app.schemas.manutencao import ManutencaoCreate
+from app.schemas.materialmanutencao import MaterialManutencaoSchema
 
 
 def get_by_id(db: Session, id: int) -> Manutencao | None:
@@ -18,22 +20,39 @@ def create(db: Session, schema: ManutencaoCreate) -> Manutencao:
     db.refresh(db_obj)
     return db_obj
 
-def add_material(db: Session,manutencao_id: int,data: ManutencaoCreate) -> Manutencao:
+def add_material(
+    db: Session,
+    manutencao_id: int,
+    data: MaterialManutencaoSchema
+) -> Manutencao:
+
     manutencao = db.get(Manutencao, manutencao_id)
     if not manutencao:
         raise ValueError("Manutenção não encontrada")
-    material = Material(
-        nome=data.nome,
+
+    material = db.get(MaterialEstoque, data.material_id)
+    if not material:
+        raise ValueError("Material não encontrado")
+
+    if material.quantidade < data.quantidade:
+        raise ValueError("Quantidade insuficiente em estoque")
+    
+    material.quantidade -= data.quantidade
+
+    material_manutencao = MaterialManutencao(
+        manutencao=manutencao,
+        material=material,
         quantidade=data.quantidade,
-        preco_unitario=data.preco_unitario,
-        custo=data.quantidade * data.preco_unitario,
-        manutencao=manutencao
+        preco_unitario=material.preco_unitario,
+        custo=data.quantidade * material.preco_unitario
     )
-    db.add(material)
+
+    db.add(material_manutencao)
     db.commit()
     db.refresh(manutencao)
 
     return manutencao
+
 
 def remove_material(db: Session, manutencao_id: int, material_id: int) -> Manutencao:
     manutencao = db.get(Manutencao, manutencao_id)

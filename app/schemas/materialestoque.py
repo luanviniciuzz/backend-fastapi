@@ -2,17 +2,17 @@ from app.schemas.core import CamelSchema
 from datetime import datetime
 
 
-class MaterialBase(CamelSchema):
+class MateriaEstoquelBase(CamelSchema):
     nome: str
     quantidade: int
     preco_unitario: float
 
 
-class MaterialCreate(MaterialBase):
+class MaterialEstoqueCreate(MateriaEstoquelBase):
     pass
 
 
-class MaterialSchema(MaterialBase):
+class MaterialEstoqueSchema(MateriaEstoquelBase):
     id: int
     created_at: datetime | None = None
     custo: float
