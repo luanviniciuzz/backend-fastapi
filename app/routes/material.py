@@ -7,16 +7,25 @@ from app.services import material as service
 router = APIRouter(prefix="/material", tags=["Material"])
 
 
-@router.post("/", response_model=MaterialEstoqueSchema)
+@router.post("/",
+    response_model=MaterialEstoqueSchema,
+    summary="Cadastra o material no estoque"
+)
 def create_material(data: MaterialEstoqueCreate, db: Session = Depends(get_db)):
     return service.create(db, data)
 
-@router.get("/", response_model=list[MaterialEstoqueSchema])
+@router.get("/",
+    response_model=list[MaterialEstoqueSchema],
+    summary="Lista todos os materiais no estoque"
+)
 def get_all_material(db: Session = Depends(get_db)):
     objs = service.get_all(db)
     return objs
 
-@router.get("/{id}", response_model=MaterialEstoqueSchema)
+@router.get("/{id}",
+    response_model=MaterialEstoqueSchema,
+    summary="Exibi um material do estoque correspondente ao 'id'"
+)
 def get_material(id: int, db: Session = Depends(get_db)):
     obj = service.get_by_id(db, id)
     if not obj:

@@ -35,7 +35,6 @@ def add_material(db: Session,manutencao_id: int, data: MaterialManutencaoSchema)
     
     material.quantidade -= data.quantidade
     material.custo -= data.quantidade * material.preco_unitario
-
     material_manutencao = MaterialManutencao(
         manutencao=manutencao,
         material=material,
@@ -47,7 +46,6 @@ def add_material(db: Session,manutencao_id: int, data: MaterialManutencaoSchema)
     db.add(material_manutencao)
     db.commit()
     db.refresh(manutencao)
-
     return manutencao
 
 
@@ -64,5 +62,4 @@ def remove_material(db: Session, manutencao_id: int, material_id: int) -> Manute
     db.delete(material)
     db.commit()
     db.refresh(manutencao)
-
     return manutencao
