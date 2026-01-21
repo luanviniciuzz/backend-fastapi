@@ -20,11 +20,7 @@ def create(db: Session, schema: ManutencaoCreate) -> Manutencao:
     db.refresh(db_obj)
     return db_obj
 
-def add_material(
-    db: Session,
-    manutencao_id: int,
-    data: MaterialManutencaoSchema
-) -> Manutencao:
+def add_material(db: Session,manutencao_id: int, data: MaterialManutencaoSchema) -> Manutencao:
 
     manutencao = db.get(Manutencao, manutencao_id)
     if not manutencao:
@@ -38,6 +34,7 @@ def add_material(
         raise ValueError("Quantidade insuficiente em estoque")
     
     material.quantidade -= data.quantidade
+    material.custo -= data.quantidade * material.preco_unitario
 
     material_manutencao = MaterialManutencao(
         manutencao=manutencao,
