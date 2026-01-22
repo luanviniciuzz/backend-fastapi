@@ -1,5 +1,5 @@
 from __future__ import annotations
-from sqlalchemy import String, Float
+from sqlalchemy import String, Float, Column, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.models.core import BaseColumns
 from typing import List
@@ -17,6 +17,7 @@ class Manutencao(BaseColumns):
         back_populates="manutencao",
         cascade="all, delete-orphan"
     )
+    created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     @hybrid_property
     def total_cost(self) -> float:
         return sum(material.custo for material in self.materiais)

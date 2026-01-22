@@ -1,7 +1,7 @@
 from app.schemas.core import CamelSchema
 from datetime import datetime
 from typing import List
-from app.schemas.materialmanutencao import MaterialManutencaoSchema
+from app.schemas.material_manutencao import MaterialManutencaoSchema
 
 
 class ManutencaoBase(CamelSchema):
@@ -13,7 +13,7 @@ class ManutencaoCreate(ManutencaoBase):
 
 class ManutencaoSchema(ManutencaoBase):
     id: int
-    created_at: datetime | None = None
+    created_at: datetime
     materiais: List[MaterialManutencaoSchema]
     total_cost: float
     # Candidate will add 'materials' and 'total_cost' here

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from sqlalchemy import String, Integer, Float, ForeignKey
+from sqlalchemy import String, Integer, Float, ForeignKey, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, validates, relationship
 from app.models.core import BaseColumns
 
@@ -16,3 +16,5 @@ class MaterialManutencao(BaseColumns):
     custo: Mapped[float] = mapped_column(Float, nullable=False)
     manutencao = relationship("Manutencao", back_populates="materiais")
     material = relationship("MaterialEstoque")
+    created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    

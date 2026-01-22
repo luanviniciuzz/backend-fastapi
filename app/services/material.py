@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from app.models.materialestoque import MaterialEstoque
-from app.schemas.materialestoque import MaterialEstoqueCreate
+from app.models.material_estoque import MaterialEstoque
+from app.schemas.material_estoque import MaterialEstoqueCreate
 
 def get_all(db: Session) -> list[MaterialEstoque]:
     return db.scalars(select(MaterialEstoque)).all()

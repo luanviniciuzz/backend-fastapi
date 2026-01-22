@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database.core import get_db
 from app.schemas.manutencao import ManutencaoSchema, ManutencaoCreate
-from app.schemas.materialmanutencao import MaterialManutencaoCreate
+from app.schemas.material_manutencao import MaterialManutencaoCreate
 from app.services import manutencao as service
 
 router = APIRouter(prefix="/manutencao", tags=["Manutencao"])
@@ -37,13 +37,3 @@ def get_manutencao(id: int, db: Session = Depends(get_db)):
 )
 def add_material_to_manutencao( manutencao_id: int, data: MaterialManutencaoCreate, db: Session = Depends(get_db)):
     return service.add_material(db, manutencao_id, data)
-    
-@router.delete("/{manutencao_id}/materiais/{material_id}",
-    response_model=ManutencaoSchema,
-    summary="Remove um material da manutenção indicada"
-)
-def remove_material_from_manutencao(manutencao_id: int, material_id: int, db: Session = Depends(get_db)):
-    try:
-        return service.remove_material(db, manutencao_id, material_id)
-    except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))

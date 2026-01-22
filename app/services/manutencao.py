@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from app.models.manutencao import Manutencao
-from app.models.materialestoque import MaterialEstoque
-from app.models.materialmanutencao import MaterialManutencao
+from app.models.material_estoque import MaterialEstoque
+from app.models.material_manutencao import MaterialManutencao
 from app.schemas.manutencao import ManutencaoCreate
-from app.schemas.materialmanutencao import MaterialManutencaoSchema
+from app.schemas.material_manutencao import MaterialManutencaoSchema
 
 
 def get_by_id(db: Session, id: int) -> Manutencao | None:
@@ -44,22 +44,6 @@ def add_material(db: Session,manutencao_id: int, data: MaterialManutencaoSchema)
     )
 
     db.add(material_manutencao)
-    db.commit()
-    db.refresh(manutencao)
-    return manutencao
-
-
-def remove_material(db: Session, manutencao_id: int, material_id: int) -> Manutencao:
-    manutencao = db.get(Manutencao, manutencao_id)
-    if not manutencao:
-        raise ValueError("Manutenção não encontrada")
-    material = next(
-        (m for m in manutencao.materiais if m.id == material_id),
-        None
-    )
-    if not material:
-        raise ValueError("Material não encontrado nesta manutenção")
-    db.delete(material)
     db.commit()
     db.refresh(manutencao)
     return manutencao

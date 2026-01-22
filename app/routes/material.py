@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database.core import get_db
-from app.schemas.materialestoque import MaterialEstoqueSchema, MaterialEstoqueCreate
+from app.schemas.material_estoque import MaterialEstoqueSchema, MaterialEstoqueCreate
 from app.services import material as service
 
 router = APIRouter(prefix="/material", tags=["Material"])

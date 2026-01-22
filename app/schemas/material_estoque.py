@@ -14,5 +14,5 @@ class MaterialEstoqueCreate(MateriaEstoquelBase):
 
 class MaterialEstoqueSchema(MateriaEstoquelBase):
     id: int
-    created_at: datetime | None = None
+    created_at: datetime
     custo: float
