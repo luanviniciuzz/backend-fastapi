@@ -1,4 +1,4 @@
-# Seu Manual Backend Challenge
+# Backend FastApi
 
 This repository contains a boilerplate FastAPI application designed to mirror the architecture of our main services.
 
